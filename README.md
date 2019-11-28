@@ -82,7 +82,7 @@ YiRan //依然快速开发平台
 ## 支付流程
 ![输入图片说明](https://images.gitee.com/uploads/images/2019/1106/133214_5e0b5cba_928853.png "屏幕截图.png")
 ## 对账流程
-![输入图片说明](https://images.gitee.com/uploads/images/2019/1128/145153_8a410e28_928853.png "屏幕截图.png")
+![输入图片说明](http://file.yirantrade.com/group1/M00/00/02/rBEADF3fcB6AHvRqAAI-9AEXHOs756.jpg "屏幕截图.png")
 
 ## 模块功能说明
 1.  **用户管理** ：用户是系统操作者，该功能主要完成系统用户配置。对各个基本的用户增删改查，导出excel表格，批量删除。
