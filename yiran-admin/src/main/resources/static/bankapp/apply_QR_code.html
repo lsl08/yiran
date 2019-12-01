@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <meta name="format-detection" content="telephone=no" />
+		<meta name="format-detection" content="email=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <title>扫码挪车</title>
+	    <script src="js/mui.min.js"></script>
+	    <link href="css/mui.min.css" rel="stylesheet"/>
+	    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+	    <link rel="stylesheet" type="text/css" href="font/iconfont.css"/>
+	    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+	    <script type="text/javascript" charset="utf-8">
+	      	mui.init();
+	    </script>
+	    <script src="js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+	    <script src="js/function.js" type="text/javascript" charset="utf-8"></script>
+	    <script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+	    <style type="text/css">
+	    	*{
+			  -webkit-touch-callout:none; /*系统默认菜单被禁用*/
+			  -webkit-user-select:none; /*webkit浏览器*/
+			  -khtml-user-select:none; /*早期浏览器*/
+			  -moz-user-select:none;/*火狐*/
+			  -ms-user-select:none; /*IE10*/
+			  user-select:none;
+			}
+			input,textarea {
+			  -webkit-user-select:auto; /*webkit浏览器*/
+			  margin: 0px;
+			  padding: 0px;
+			  outline: none;
+			}
+	    	body{
+	    		background: url(images/bg.png) no-repeat center/100% 100%; 
+	    		padding: 0 15px;
+	    	}
+	    	header{
+	    		height: 178px;
+	    		background: url(images/login1.png) no-repeat center 45px/75px;
+	    	}
+	    	#phone,#pwd,#licensePlate{
+	    		display: flex;
+	    		padding: 20px 0px;
+	    		border-bottom: 1px solid #4A4A4A;
+	    	}
+				
+				#licensePlate span{
+					width: 16px;
+					height: 20px;
+					transform: translateY(2px);
+					background: url(images/Car.png) no-repeat center/100% 100%;
+				}
+				
+	    	#phone span{
+	    		width: 16px;
+	    		height: 20px;
+	    		transform: translateY(2px);
+	    		background: url(images/phone.png) no-repeat center/100% 100%;
+	    	}
+	    	#pwd span{
+	    		width: 16px;
+	    		height: 20px;
+	    		transform: translateY(2px);
+	    		background: url(images/pwd.png) no-repeat center/100% 100%;
+	    	}
+	    	#tel,#cont,#lp{
+	    		flex: 1;
+	    		background: none;
+	    		height: 24px;
+	    		line-height: 24px;
+	    		margin: 0;
+	    		font-size: 14px;
+	    		border: 0;
+	    		padding: 0 0 0 12px;
+	    		color: #BEA473;
+	    		
+	    	}
+	    	input::-webkit-input-placeholder {
+		        color: #5c5c5c;
+		    }
+	    	#pwd button{
+	    		padding: 0;
+	    		background: none;
+	    		border: 0;
+	    		color: rgb(190,164,115);
+	    	}
+	    	#pwd>div,#phone>div,#licensePlate>div{
+	    		position: relative;
+	    		flex: 1;
+	    		padding-right: 24px;
+	    	}
+	    	#pwd i,#phone i,#licensePlate i{
+	    		position: absolute;
+	    		height: 24px;
+	    		right: 0px;
+	    		top: 0px;
+	    		width: 24px;
+	    		background:url(images/quxiao.png) no-repeat center/18px;
+	    		display: none;
+	    	}
+	    	#apply{
+	    		margin-top: 20px;
+	    		width: 100%;
+	    		background: rgb(56,51,51);
+	    		height: 50px;
+	    		border-radius: 0;
+	    		color: #8C7C6B;
+	    		font-size: 20px;
+	    		border: 0;
+	    	}
+	    	#apply.active{
+	    		background:linear-gradient(to right,rgb(205,175,119),rgb(241,215,154));
+				color:rgb(98,75,12);
+	    	}
+	    	.duigou{
+	    		height: 16px;
+	    		width: 20px;
+	    		margin-right:10px ;
+	    		padding: 0 4px;
+	    		transform: translateY(2px);
+	    		background: url(images/duigou1.png) no-repeat center/16px;
+	    	}
+	    	.duigou.active{
+	    		background: url(images/duigou.png) no-repeat center/16px;
+	    	}
+	    	
+	    	
+	    </style>
+	</head>
+	<body>
+		<header></header>
+		<label id="licensePlate">
+			<span></span>
+			<div><input type="text"  id="lp" value="" placeholder="请输入您的车牌" /> 
+			<i></i>
+			</div>
+		</label>
+		<label id="phone">
+			<span></span>
+			<div><input type="number" pattern="\d*"/ id="tel" value="" placeholder="请输入您的手机号" oninput="if(value.length>11)value=value.slice(0,11)"/> 
+			<i></i>
+			</div>
+		</label>
+		<label id="pwd">
+			<span></span>
+			<div><input type="number" pattern="\d*"/ id="cont" value="" placeholder="请输入验证码" oninput="if(value.length>6)value=value.slice(0,6)"/>
+			<i></i>
+			</div>
+			<button id="yzm">获取验证码</button>
+		</label>
+		<button id="apply">申请挪车二维码</button>
+		<input type="hidden" id="msgOrderNo" />
+	</body>
+	<script type="text/javascript">
+		
+		function getOpenId() {
+			 var name,value;
+			 var str=location.href; //取得整个地址栏
+			 var num=str.indexOf("?")
+			 if(num == -1){
+				 return "";
+			 }else{
+				 str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+				 var param = str.indexOf("=");
+				 console.log(str)
+				 var openid = str.substr(param+1);
+				 return openid;
+			 }
+			 
+		}
+		if(sessionStorage.getItem("height")){
+			$("body").css({
+				height:sessionStorage.getItem("height")+"px"
+			})
+		}else{
+			var  height = $("body").height();
+			sessionStorage.setItem("height",height);
+			$("body").css({
+				height:height+"px"
+			})
+		}
+		
+		
+		
+		var val = "";
+		//显示叉号
+		
+		$("#tel").on("input propertychange focus",function(){
+			$(this).attr("name","text");
+//			console.log($(this).val(),$(this).val().length)
+			val = $(this).val().replace(/\D/g,"");
+			$(this).val(val);
+//			console.log($(this).val())
+			if($(this).val() !== ""){
+				$(this).parent().children("i").css({
+					display:"block"
+				})
+			}else{
+				$(this).parent().children("i").css({
+					display:"none"
+				})
+			}
+			if($(this).val().length == 11){
+				
+				$("#apply").addClass("active")
+			}else{
+				$("#apply").removeClass("active")
+			}
+			
+		})
+		$("#tel").on("blur",function(){
+			$(this).attr("name","number");
+			$(this).parent().children("i").css({
+				display:"none"
+			})
+		})
+		var val2 = "";
+		//显示叉号
+		$("#cont").on("input propertychange focus",function(){
+			$(this).attr("name","text");
+			val2 = $(this).val().replace(/[\D]/g,"");
+			$(this).val(val2);
+			if($(this).val() !== ""){
+				$(this).parent().children("i").css({
+					display:"block"
+				})
+			}else{
+				$(this).parent().children("i").css({
+					display:"none"
+				})
+			}
+			
+		})
+		$("#cont").on("blur",function(){
+			$(this).attr("name","number");
+			$(this).parent().children("i").css({
+				display:"none"
+			})
+		})
+		
+		var val3 = "";
+		//显示叉号
+		$("#lp").on("input propertychange focus",function(){
+			$(this).attr("name","text");
+			
+			if($(this).val() !== ""){
+				$(this).parent().children("i").css({
+					display:"block"
+				})
+			}else{
+				$(this).parent().children("i").css({
+					display:"none"
+				})
+			}
+			
+		})
+		$("#lp").on("blur",function(){
+			$(this).attr("name","number");
+			$(this).parent().children("i").css({
+				display:"none"
+			})
+		})
+		//点击input旁边的叉号取消input的值
+		function quxiao(){
+			$(this).parent().children("input").val("");
+			$(this).css({
+				display:"none"
+			})
+		}
+		$("#phone").on("tap","i",quxiao)
+		$("#pwd").on("tap","i",quxiao)
+		$("#licensePlate").on("tap","i",quxiao)
+		
+		
+		//获取验证码
+		var yzm_flag = true;
+		$("#pwd").on("tap","#yzm",function(){
+			if($("#tel").val() == ""){
+				return mui.alert("请输入手机号")
+			}
+			if(/^\d{11}$/.test($(this).val())){
+				return mui.alert("手机号格式不正确")
+			}
+			if($("#tel").val().length != 11 || $("#tel").val().indexOf(1) != 0){
+				return mui.alert("手机号不正确")
+			}
+			if(yzm_flag){
+				yzm_flag=false;
+				var that = this;
+				var num = 60;
+				$(this).text(num+"s重发");
+				var timer = setInterval(function(){
+					num--;
+					$(that).text(num+"s重发");
+					if(num == 0){
+						clearInterval(timer);
+						yzm_flag=true;
+						$(that).text("重新发送")
+					}
+				},1000)
+				$.ajax({
+					type: "post",
+					url: url()+"/api/yiran/movingCar/getVerificationCode/"+$("#tel").val(),
+					async: false, //同步
+					success: function (data) {
+						if(data.code == '200'){
+							console.log(data);
+							var msgOrderNo = data.data.msgOrderNo;
+							$("#msgOrderNo").val(msgOrderNo);
+							mui.toast("发送成功",{ duration:'2000', type:'div' })
+						}
+					},
+					//调用出错执行的函数
+					error: function(){
+							//请求出错处理
+					}
+				})
+				
+			}
+		})
+		
+		//登录
+		$("#apply").on("tap",function(){
+			if(!$(this).hasClass("active")){
+				return;
+			}
+			if($("#lp").val() == ""){
+				return mui.alert("请输入车牌号")
+			}
+			if($("#tel").val() == ""){
+				return mui.alert("请输入手机号")
+			}
+			if($("#cont").val() == ""){
+				return mui.alert("请输入验证码")
+			}
+			var MovingCar = function MovingCar(openId,licensePlate,phoneNumber,verificationCode,msgOrderNo) {
+				this.openId = openId;
+				this.licensePlate = licensePlate;
+				this.phoneNumber = phoneNumber;
+				this.verificationCode = verificationCode;
+				this.msgOrderNo = msgOrderNo;
+			}
+			var movingCar = new MovingCar(getOpenId(),
+			$("#lp").val(),$("#tel").val(),$("#cont").val(),$("#msgOrderNo").val());
+			console.info("申请挪车二维码参数:"+JSON.stringify(movingCar))		
+				$.ajax({
+					type: "post",
+					url: url()+"/api/yiran/movingCar/applyForCarCode",
+					data: JSON.stringify(movingCar),
+					//参数格式为json
+					contentType: "application/json; charset=utf-8",
+					async: false, //同步
+					success: function (data) {
+						console.info("申请挪车二维码返回结果->错误码："+data.code+",错误信息："+data.msg)
+						if(data.code == "200"){
+								sessionStorage.setItem("qrCodeUrl",data.data);
+								window.location.href="bankload.html";
+							}
+					},
+					//调用出错执行的函数
+					error: function(){
+							mui.toast("请求服务器api失败，无法获取数据",{ duration:'2000', type:'div' })
+					}
+				})
+		})
+	</script>
+</html>

@@ -92,5 +92,10 @@ public class NotifyMsgLogServiceImpl implements INotifyMsgLogService
 	public int getSendSmSCount(String beginDate, String endDate, String phone) {
 		return notifyMsgLogMapper.getSendSmSCount(beginDate, endDate, phone);
 	}
+
+	@Override
+	public int getSendSmSCountByPhoneType(String beginDate, String endDate, String phoneNumber1, String businessType) {
+		return notifyMsgLogMapper.getSendSmSCountByPhoneType(beginDate, endDate, phoneNumber1,businessType);
+	}
 	
 }

@@ -65,6 +65,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			and t.phone = #{phone} 
     			and t.status='S'
     </select>
+    <select id="getSendSmSCountByPhoneType" resultType="int">
+    	select count(1) from notify_msg_log t 
+    		where t.senddata BETWEEN #{beginDate} 
+    			and #{endDate} 
+    			and t.phone = #{phone} 
+    			and t.business_type = #{businessType}
+    			and t.status='S'
+    </select>
         
     <insert id="insertNotifyMsgLog" parameterType="NotifyMsgLog" useGeneratedKeys="true" keyProperty="id">
         insert into notify_msg_log

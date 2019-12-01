@@ -297,6 +297,7 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/product/**", "anon");
         //demo不需要拦截
         filterChainDefinitionMap.put("/weChat/**", "anon");
+        filterChainDefinitionMap.put("/bankapp/**", "anon");
         //获取license
         filterChainDefinitionMap.put("/license/**", "anon");
         // 退出 logout地址，shiro去清除session
@@ -313,6 +314,8 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/v2/api-docs", "anon");
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/wechatMall/**", "anon");
+        filterChainDefinitionMap.put("/wxMoveCar/**", "anon");
+        
         //微信公众号认证号文件访问路径
         filterChainDefinitionMap.put("/MP_verify_LPKwHqIAYcdGMt9d.txt", "anon");
         // 系统权限列表

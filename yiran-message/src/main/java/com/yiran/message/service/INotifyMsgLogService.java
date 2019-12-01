@@ -66,5 +66,7 @@ public interface INotifyMsgLogService
 	 * @return
 	 */
 	public int getSendSmSCount(String beginDate,String endDate,String phone);
+
+	public int getSendSmSCountByPhoneType(String beginDate, String endDate, String phoneNumber1, String notifyType);
 	
 }

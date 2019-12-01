@@ -37,6 +37,8 @@ public class PushMessageServiceImpl implements IPushMessageService {
 	private final static String COMMODIT_HAS_BEEN_NOTIFIED = "commodit_has_been_notified";
 	//订单包裹跟踪通知
 	private final static String PARCEL_TRACKING = "parcel_tracking";
+	//挪车通知
+	private final static String MOVEING_CAR_NOTIFY = "moveing_car_notify";
 	@Autowired
     private WxMpService wxMpService ;
 	
@@ -178,6 +180,43 @@ public class PushMessageServiceImpl implements IPushMessageService {
         data.add(new WxMpTemplateData("delivername", map.get("delivername")));
         data.add(new WxMpTemplateData("ordername", map.get("trackingNumber")));
         data.add(new WxMpTemplateData("remark", "\n\n如有问题请直接在微信留言，我们将第一时间为您服务！欢迎再次光临！"));
+        templateMessage.setData(data);
+        try {
+            wxMpService.getTemplateMsgService().sendTemplateMsg(templateMessage);
+        }catch (WxErrorException e) {
+        	logger.error("【微信模版消息】发送失败, {}", e);
+        }
+		
+	}
+
+	/**
+	 * 尊敬的车主，您好！你有新的挪车请求
+		车牌号：京A88888
+		发送时间：2014年7月21日 18:36:00
+		您的爱车挡住路啦，麻烦您给挪一下呗，如有疑问，请联系客服。
+		
+		{{first.DATA}}
+		车牌号：{{keyword1.DATA}}
+		发送时间：{{keyword2.DATA}}
+		{{remark.DATA}}
+	 */
+	@Override
+	public void pushMoveingCarNotify(String jsonStr) {
+		WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
+		WeixinTemplate  weixinTemplate = weixinTemplateMapper.selectWeixinTemplateByTemplateKey(MOVEING_CAR_NOTIFY);
+        //模板ID
+		templateMessage.setTemplateId(weixinTemplate.getTemplateId());
+		
+		Map<String, String> map = WeiXinJsonUtil.jsonToMap(jsonStr);
+		
+		//接收消息openId
+        templateMessage.setToUser(map.get("openId"));
+        
+        List<WxMpTemplateData> data = new ArrayList<WxMpTemplateData>();
+        data.add(new WxMpTemplateData("first", "尊敬的车主，您好！你有新的挪车请求"));
+        data.add(new WxMpTemplateData("keyword1", map.get("licensePlate")));
+        data.add(new WxMpTemplateData("keyword2", map.get("senddate")));
+        data.add(new WxMpTemplateData("remark", "您的爱车挡住路啦，麻烦您给挪一下呗"));
         templateMessage.setData(data);
         try {
             wxMpService.getTemplateMsgService().sendTemplateMsg(templateMessage);

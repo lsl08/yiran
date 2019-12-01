@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								微信openId：<input type="text" name="openId"/>
+							</li>
+
+							<li>
+								车牌：<input type="text" name="licensePlate"/>
+							</li>
+
+							<li>
+								手机号：<input type="text" name="phoneNumber"/>
+							</li>
+
+							<li>
+								通知方式:
+								<select name="notiyType" th:with="type=${@dict.getType('move_car_notify_type')}">
+								  <option value="">所有</option>
+								  <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}">
+								  </option>
+								</select>
+							</li>
+
+							<li>
+								扩展字段1：<input type="text" name="extend1"/>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="weixin:weixinMovingCarDetail:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="weixin:weixinMovingCarDetail:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('weixin:weixinMovingCarDetail:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('weixin:weixinMovingCarDetail:remove')}]];
+        var prefix = ctx + "weixin/weixinMovingCarDetail";
+        var move_car_notify_type = [[${@dict.getType('move_car_notify_type')}]];
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "挪车明细",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'id', 
+					title : '',
+					visible: false
+				},
+				{
+					field : 'openId', 
+					title : '微信openId',
+					sortable: true
+				},
+				{
+					field : 'licensePlate', 
+					title : '车牌',
+					sortable: true
+				},
+				{
+					field : 'phoneNumber', 
+					title : '手机号',
+					sortable: true
+				},
+				{
+					field : 'address', 
+					title : '违停地址',
+					sortable: true
+				},
+				{
+					field : 'notiyType', 
+					title : '通知方式',
+					sortable: true,
+					formatter: function(value, row, index) {
+				      return $.table.selectDictLabel(move_car_notify_type, value);
+				  	}
+				},
+				{
+					field : 'createTime', 
+					title : '创建时间',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

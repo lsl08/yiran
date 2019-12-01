@@ -18,6 +18,27 @@ public class WeixinSetting extends BaseEntity
 	public static final String KEY_WECHAT_STORE_OPENID = "WECHAT_STORE_OPENID";
 
 	public static final String KEY_WEIXIN_MINE_LINK = "WEIXIN_MINE_LINK";
+
+	/**
+	 * 扫码挪车地址
+	 */
+	public static final String KEY_WEIXIN_SWEEP_AND_MOVE_CAR = "WEIXIN_SWEEP_AND_MOVE_CAR";
+
+	public static final String KEY_ERWEIMA_WIDTH = "ERWEIMA_WIDTH";
+
+	public static final String KEY_ERWEIMA_HEIGHT = "ERWEIMA_HEIGHT";
+
+	public static final String KEY_IMG_X = "IMG_X";
+
+	public static final String KEY_IMG_Y = "IMG_Y";
+
+	public static final String KEY_WEIXIN_MOVE_CAR_REDIRECT_URI = "MOVE_CAR_REDIRECT_URI";
+
+	public static final String KEY_WEIXIN_APPLY_MOVE_CAR_CODE_REDIRECT_URI = "APPLY_MOVE_CAR_CODE_REDIRECT_URI";
+
+	public static final String KEY_WEIXIN_MY_MOVE_CAR_CODE_REDIRECT_URI = "MY_MOVE_CAR_CODE_REDIRECT_URI";
+
+	public static final String KEY_WEIXIN_NOTIFY_VEHICLE_OWNER_REDIRECT_URI = "NOTIFY_VEHICLE_OWNER_REDIRECT_URI";
 	
 	//微信公众号秘钥
 	public static String KEY_WEIXIN_APPSECRET="WEIXIN.APPSECRET";

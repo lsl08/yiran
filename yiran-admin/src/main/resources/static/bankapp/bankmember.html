@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="font/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <script src="js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/function.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+    	#input_example input[name=partnerId]+span{
+			right: -100px;
+		}
+		.mui-backdrop {
+		    position: fixed;
+		    top: 0;
+		    right: 0;
+		    bottom: 0;
+		    left: 0;
+		    z-index: 998;
+		    background-color: rgba(0,0,0,0);
+		}
+    </style>
+</head>
+<body>
+	
+	<header class="mui-bar mui-bar-nav header-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav"></a>
+	    <h1 class="mui-title">绑卡</h1>
+	</header>
+	<div class="mui-content">
+		<div class="banner">
+			<img src="images/Group 3.png"/>
+			<span>安全绑卡 更快服务</span>
+		</div>
+	    <form class="mui-input-group " id="input_example">
+	        <div class="mui-input-row ipt_i" style="border-bottom: 10px solid #f5f5f5;height: 60px;">
+	        	<label>机构名称</label>
+	            <input style="font-weight: 900;" type="text" name="partnerId" value="" readonly="readonly" placeholder="请选择机构名称" class="mui-input-clear" placeholder="input">
+	        	<!--<i class="mui-icon mui-icon-arrowright" style="float: right;"></i>-->
+	        </div>
+	        <div class="mui-input-row">
+	        	<label>持卡人</label>
+	            <input type="text" name="realName" disabled value="" placeholder="请输入持卡人姓名" class="mui-input-clear" placeholder="input">
+	        </div>
+	        <div class="mui-input-row">
+	        	<label>身份证号</label>
+	            <input type="text" name="identityNo" disabled value="" placeholder="请输入身份证号" class="mui-input-clear" placeholder="input">
+	        </div>
+	        <div class="mui-input-row bankid">
+	        	<label>卡号</label>
+	            <input type="text" name="bankCardNo" disabled maxlength="23" value="" placeholder="请输入储蓄卡号" class="mui-input-clear" placeholder="input">
+	            <i class="iconfont icon-xiangqing"></i>
+	        </div>
+	        <div class="bank_icon" style="display: block;">
+	        	<img src="" /><span>招商银行</span>
+	        </div>
+	        <div class="mui-input-row member">
+	        	<label>手机号</label>
+	            <input type="text" style="float: left;" name="mobileNum" maxlength="13" value="" placeholder="银行卡预留手机号码" class="mui-input-clear" placeholder="input">
+	            <i style="float: left;" class="iconfont memale icon-xiangqing"></i>
+	        </div>
+	        <div class="bank_d member">
+	        	<img src="images/dui.png" /><span>我阅读并同意<mark class="bankxy">《银行卡绑定协议》</mark></span>
+	        </div>
+	    </form>
+	        
+	</div>
+	<button type="button" data='0' class="mui-btn mui-btn-warning next nextbtn">下一步</button>
+	<!--业务类型-->
+</body>
+<script type="text/javascript">
+	ifToken("/bankapp/bankindex.html");
+	window.onbeforeunload = function(){
+		monilefoo()
+	}
+	$('#input_example input[name=partnerId]').css('color','#BEA473')
+	//接受数据
+	var params;
+	if(sessionStorage.getItem('params')){
+		params=sessionStorage.getItem('params')
+		$('.ipt_i').css('display','none')
+		$('.ipt_i input[name]').val(partnerIdstr2(params.merchant))
+	}
+	var bankdata
+	if(sessionStorage.getItem('bankdata')){
+		bankdata=JSON.parse(sessionStorage.getItem('bankdata'))
+		if(bankdata.mobileNum){
+			monilefoo()
+		}
+	}else{
+		location.href='bankindex.html'
+	}
+	console.log(bankdata)
+	$('#input_example input[name=partnerId]').val(partnerIdstr2(bankdata.partnerId))
+	$('#input_example input[name=bankCardNo]').val(bankcode(bankdata.bankCardNo))
+	$('#input_example input[name=identityNo]').val(bankdata.identityNo)
+	$('#input_example input[name=realName]').val(bankdata.realName)
+	if(getCookie("mobile")){
+		$('#input_example input[name=mobileNum]').val(getphone(getCookie("mobile")));
+		monilefoo();
+	}
+	
+	$('.bank_icon img').attr('src','images/'+bankdata.instCode+'.png')
+	$('.bank_icon span').html(bankdata.instName)
+	$('.bank_icon span').attr('instCode',bankdata.instCode)
+	$('.bank_icon span').attr('dbcr',bankdata.dbcr)
+	//下一步
+	mui(document.body).on('tap', '.nextbtn', function(e){
+		//按钮式灰色不可点击
+		var mobileNum=$('#input_example input[name=mobileNum]').val().replace(/\s+/g,"")//发送和判断时 取消掉空格
+		if($(this).attr('data')=='0'){
+			return false
+		}
+		if(!phone(mobileNum)){
+			mui.toast('手机号格式不正确！')
+			return false
+		}
+		if($('.member img').attr('src')=='images/no.png'){
+			mui.toast('请先阅读并同意银行卡绑定协议！')
+			return false
+		}
+		$('.nextbtn').attr('disabled','disabled')
+//		var mask = mui.createMask(function(){
+//			mask.show();
+//		});
+//		mask.show();
+		var datas={
+			partnerId:partnerIdstr($('#input_example input[name=partnerId]').val()),
+			instCode:$('.bank_icon span').attr('instCode'),
+			instName:sessionStorage.getItem("bankName"),
+			dbcr:$('.bank_icon span').attr('dbcr'),
+			realName:$('#input_example input[name=realName]').val(),
+			identityNo:$('#input_example input[name=identityNo]').val().toLocaleUpperCase(),
+			bankCardNo:($('#input_example input[name=bankCardNo]').val()).replace(/\s+/g,""),
+			mobileNum:mobileNum,
+			memberId:getCookie("memberId")
+		}
+		console.log(datas)
+		ajax(url()+'/cashier/h5/signByMerchant.htm',datas,function(data){
+			$('.nextbtn').removeAttr('disabled')
+			console.log(data)
+			
+			if(!data.success){
+				if(data.code == "4100"){
+					mui.alert(data.message);
+					return false
+				}
+				mui.toast(data.message)
+				return false
+			}
+			datas.memberId=data.dataMap.memberId
+			sessionStorage.setItem('bankdata',JSON.stringify(datas))
+			mui.openWindow({url:'bankverification.html'})
+		},function(){
+			$('.nextbtn').removeAttr('disabled')
+		})
+		
+
+	})
+	//手机号
+	mui(document.body).on('input', '#input_example input[name=mobileNum]', function(e) {
+		$('.nextbtn').removeAttr('disabled')
+		
+		monilefoo()
+	})
+	//协议跳转
+	mui(document.body).on('tap', '.bankxy', function(e) {
+		if($('#input_example input[name=mobileNum]').val().replace(/\s+/g,"")!=''){
+			bankdata.mobileNum=$('#input_example input[name=mobileNum]').val().replace(/\s+/g,"")
+		}
+		sessionStorage.setItem('bankdata',JSON.stringify(bankdata))
+		var str=$('#input_example input[name=partnerId]').val()
+		if(str=='永达融资租赁'){
+			mui.openWindow({url:'banktxtyd.html'})
+		}
+		if(str=='永达小额贷款'){
+			mui.openWindow({url:'banktxtxd.html'})
+		}
+		if(str=='永昇融资租赁'){
+			mui.openWindow({url:'banktxtys.html'})
+		}
+	})
+	//图片是否选中
+	
+	mui(document.body).on('tap', '.bank_d img', function(e) {
+		if($(this).attr('src')=='images/dui.png'){
+			$(this).attr('src','images/no.png')
+			$('.nextbtn').css('background','#DDDDDD')
+			$('.nextbtn').attr('data','0')
+		}else{
+			$(this).attr('src','images/dui.png')
+			if($('#input_example input[name=mobileNum]').val().length>12){
+				$('.nextbtn').css('background','#BEA473')
+				$('.nextbtn').attr('data','1')
+			}
+		}
+	})
+	//查看手机号详情
+	$('.memale').click( function(e) {
+		mui.alert('<p>银行预留的手机号码是办理该银行卡时所填写的手机号码。没有预留、手机号忘记或者已停用，请联系银行客服更新处理</p>','预留手机号说明<p>银行填写</p>','知道了')
+	})
+	//查看银行卡号详情
+	$('.bankid i').click( function(e) {
+		if($('#input_example input[name=mobileNum]').val().replace(/\s+/g,"")!=''){
+			bankdata.mobileNum=$('#input_example input[name=mobileNum]').val().replace(/\s+/g,"")
+		}
+		sessionStorage.setItem('bankdata',JSON.stringify(bankdata))
+		mui.openWindow({url:'banklist.html'})
+	})
+	
+	function monilefoo(){
+		var phonestr=($('#input_example input[name=mobileNum]').val()).replace(/\s+/g,"")
+		var phonestr2=getphone(phonestr)
+		$('#input_example input[name=mobileNum]').val(phonestr2)
+		if($('.bank_d img').attr('src')=='images/dui.png'){
+			if($('#input_example input[name=mobileNum]').val().length>12){
+				$('.nextbtn').css('background','#BEA473')
+				$('.nextbtn').attr('data','1')
+			}else{
+				$('.nextbtn').css('background','#DDDDDD')
+				$('.nextbtn').attr('data','0')
+			}
+		}
+		
+	}
+	mui(document.body).on('tap','.member .mui-icon-clear',function(){
+		monilefoo()
+	})
+</script>
+</html>

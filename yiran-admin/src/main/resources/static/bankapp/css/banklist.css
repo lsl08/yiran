@@ -1,0 +1,40 @@
+.cont_top{
+	height: 44px;
+	background: #fff;
+	text-align: center;
+	line-height: 44px;
+	font-size: 14px;
+	font-family: PingFangSC-Regular;
+}
+.cont_c{
+	margin-top: 10px;
+}
+.cont_c ul{
+	background: #fff;
+}
+.cont_c ul li{
+	border-bottom: 1px solid #eee;
+	overflow: hidden;
+	height: 64px;
+	padding-top: 9px;
+	padding-left: 21px;
+
+}
+.cont_c ul li img,.cont_c ul li div{
+	float: left;
+}
+.cont_c ul li img{
+	margin-right: 9px;
+	width: 20px;
+	height: 20px;
+	margin-top: 7px;
+}
+.cont_c ul li span{
+	font-size: 15px;
+	color: #000;
+	
+}
+.cont_c ul li p{
+	font-size: 12px;
+	color: rgb(155,155,155);
+}

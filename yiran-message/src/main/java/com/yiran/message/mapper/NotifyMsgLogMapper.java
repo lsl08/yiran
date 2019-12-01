@@ -75,7 +75,14 @@ public interface NotifyMsgLogMapper
 	 * @param phone
 	 * @return
 	 */
-	public int getSendSmSCount(@Param("beginDate")String beginDate,@Param("endDate")String endDate, @Param("phone")String phone);
+	public int getSendSmSCount(@Param("beginDate")String beginDate,
+			@Param("endDate")String endDate, 
+			@Param("phone")String phone);
+
+	public int getSendSmSCountByPhoneType(@Param("beginDate")String beginDate, 
+			@Param("endDate")String endDate, 
+			@Param("phone")String phone, 
+			@Param("businessType")String businessType);
 	
 	
 }

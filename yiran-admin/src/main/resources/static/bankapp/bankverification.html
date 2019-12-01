@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="font/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="css/verification.css"/>
+    <link rel="stylesheet" type="text/css" href="font/font/iconfont.css"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <script src="js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/function.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/verification.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+    	#fom input[name=smsCode]::-webkit-input-placeholder{
+    		color: #9b9b9b;
+    	}
+	</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav header-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav"></a>
+	    <h1 class="mui-title">绑定银行卡</h1>
+	</header>
+	<div class="mui-content" style="background: #f5f5f5;">
+		<div class="con_top">
+			<p>绑定银行卡需短信确认，验证码已发送到手机:</p>
+			<span class="mobileNum">188****8323</span>
+		</div>
+		<form class="mui-input-group " id="fom">
+	        <div class="mui-input-row ipt_i" style="border-bottom: 12px solid #f5f5f5;height: 60px;">
+	        	<label>验证码</label>
+	            <input type="text" style="font-size: 16px;" name="smsCode" maxlength="6" value="" readonly="readonly" placeholder="短信验证码" class="mui-input-clear" placeholder="input">
+	            <mark class="send">获取验证码</mark>
+	        </div>
+	    </form>
+	        <button type="button" data='0' class="mui-btn mui-btn-warning next nextbtn">下一步</button>
+	</div>
+	<div class="pays-wrap">
+		<div class="pays">
+			<div class="pays-con">
+				<div class="keyboard">
+				    <table class="key-tab">
+				        <tr>
+				            <td>1</td>
+				            <td>2</td>
+				            <td>3</td>
+				        </tr>
+				        <tr>
+				            <td>4</td>
+				            <td>5</td>
+				            <td>6</td>
+				        </tr>
+				        <tr>
+				            <td>7</td>
+				            <td>8</td>
+				            <td>9</td>
+				        </tr>
+				        <tr>
+				            <td class="empty"></td>
+				            <td>0</td>
+				            <td class="clear"><i class="iconfont icon-shanchushangwu103401"></i></td>
+				        </tr>
+				    </table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--验证手机号-->
+</body>
+<script type="text/javascript">
+	ifToken("/bankapp/bankindex.html")
+	// $(this).attr('disabled','disabled')
+	var bankdata=JSON.parse(sessionStorage.getItem('bankdata'))
+	var mobileNum=bankdata.mobileNum
+	console.log(bankdata)
+	$('.mobileNum').html(mobileNum.substr(0,3)+'****'+mobileNum.substr(7,4))
+	
+	//下一步
+	mui(document.body).on('tap', '.nextbtn', function(e) {
+		console.log(1111)
+		
+		//按钮式灰色不可点击
+		if($(this).attr('data')=='0'){
+			return false
+		}
+		$(this).attr('disabled','disabled');
+		ajax(url()+'/cashier/h5/signAdvanceByMerchant.htm',{memberId:bankdata.memberId,smsCode:$('#fom input[name=smsCode]').val()},function(data){
+			console.log(data)
+			$('.nextbtn').removeAttr('disabled')
+			if(!data.success){
+				if(data.code='9700'){
+					mui.toast('验证码输入有误，请重新输入')
+					return false
+				}else if(data.code='9701'){
+					mui.toast('短信验证码和手机不匹配')
+					return false
+				}else if(data.code='9702'){
+					mui.toast('验证码错误次数超过最大次数,请重新获取进行验证')
+					return false
+				}else if(data.code='9703'){
+					mui.toast('短信验证码失效,请重新获取')
+					return false
+				}else if(data.code='9704'){
+					mui.toast('短信发送异常,请稍后重试')
+					return false
+				}
+				bankdata.message=data.message
+				bankdata.success=false
+			}else{
+				bankdata.success=true
+			}
+			sessionStorage.setItem('bankdata',JSON.stringify(bankdata))
+			mui.openWindow({url:'bankload.html'})
+		},function(){
+			$('.nextbtn').removeAttr('disabled')
+		})
+		return false
+	})
+	var sendtime
+	var num=60
+	clearInterval(sendtime)
+	num=60
+	$('.send').html('(60s)后重发')
+	$('.send').addClass('send-act')
+	sendtime=setInterval(function(){
+		num--
+		if(num>0){
+			$('.send').html('('+(num>=10?num:'0'+num)+'s)后重发')
+		}else{
+			$('.send').html('获取验证码')
+			$('.send').removeClass('send-act')
+			clearInterval(sendtime)
+		}
+	},1000)
+	$('.send').click(function(e) {
+		$('.nextbtn').removeAttr('disabled')
+		
+		if($(this).attr('class').length>8){
+			return false
+		}
+
+		ajax(url()+'/cashier/h5/signByMerchant.htm',bankdata,function(data){
+			console.log(data)
+			if(!data.success){
+				mui.toast(data.message)
+				return false
+			}
+		}) 
+		$(this).html('(60s)后重发')
+		$(this).addClass('send-act')
+		clearInterval(sendtime)
+		num=60
+		sendtime=setInterval(function(){
+			num--
+			if(num>0){
+				$('.send').html('('+(num>=10?num:'0'+num)+'s)后重发')
+			}else{
+				$('.send').html('获取验证码')
+				$('.send').removeClass('send-act')
+				clearInterval(sendtime)
+			}
+		},1000)
+	})
+</script>
+
+</html>

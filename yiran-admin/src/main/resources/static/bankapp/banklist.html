@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="font/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/banklist.css"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <script src="js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/function.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<style type="text/css">
+    	.next{
+    		display: block;
+			width: 90%;
+			height: 50px;
+			margin: 0 auto;
+			background: #BEA473;
+			border-radius: 3px;
+			border: 1px solid #BEA473;
+		}
+		.con_top img{
+			margin: 50px auto 28px;
+		}
+		.con_top p{
+			font-family: PingFang-SC-Bold;
+			text-align: center;
+			color: #000;
+			font-size: 18px;
+			margin: 0 0 45px;
+		}
+		.con_top p span{
+			display: block;
+			text-align: center;
+			font-size: 14px;
+			color: rgb(155,155,155);
+		}
+	</style>
+<body>
+	
+	<header class="mui-bar mui-bar-nav header-nav" style="box-shadow: none;">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav"></a>
+	    <h1 class="mui-title">挪车二维码</h1>
+	</header>
+	<div class="mui-content" style="background: #f5f5f5;" >
+		<div id="carCodeList"></div>
+		<div class="con_top">
+			<p>
+				长按图片保存挪车二维码
+			</p>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	function getOpenId() {
+		var name,value;
+		var str=location.href; //取得整个地址栏
+		var num=str.indexOf("?")
+		if(num == -1){
+			return "";
+		}else{
+			str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+			var param = str.indexOf("=");
+			console.log(str)
+			var openid = str.substr(param+1);
+			return openid;
+		}
+		
+	}
+	
+	$(function() {
+		var carCodeListHtml ="";
+		var openId = getOpenId();
+		$.ajax({
+			type: "post",
+			url: url()+"/api/yiran/movingCar/queryMoveCarQRCode/"+openId,
+			async: false, //同步
+			success: function (data) {
+				var carCodeList = data.data;
+				carCodeListHtml = "";
+				for(var i = 0; i < carCodeList.length; i++){
+					carCodeListHtml +="<div class='con_top'><img id='qrcode' src='"+carCodeList[i].qrCodeUrl+"' width='90%' height='80%'/></div>";
+				}
+				$("#carCodeList").html(carCodeListHtml);
+			},
+			//调用出错执行的函数
+			error: function(){
+				$.alert("请求服务器api失败，无法获取数据");
+			}
+		});
+	});
+</script>
+</html>

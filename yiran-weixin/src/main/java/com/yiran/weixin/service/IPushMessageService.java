@@ -28,5 +28,10 @@ public interface IPushMessageService {
 	 * @param jsonStr
 	 */
 	public void pushCommoditHasBeenNotified(String jsonStr);
+	/**
+	 * 挪车通知
+	 * @param jsonStr
+	 */
+	public void pushMoveingCarNotify(String jsonStr);
 	
 }

@@ -1,0 +1,91 @@
+body,ul,li,dl,dt,dd,p,ol,h1,h2,h3,h4,h5,h6,form,img,table,fieldset,legend{margin:0; padding:0;}
+ul,li,ol{list-style:none;}
+img,fieldset{border:0; }
+img{display:block;}
+a{text-decoration:none; color:#333;}
+h1,h2,h3,h4,h5,h6{font-weight:100;}
+
+body{font-size:12px; font-family:"微软雅黑";}
+html,body{
+	height: 100%;
+}
+input,a{outline:none;}
+.mui-content,body{
+	background: #f5f5f5;
+}
+/*登录*/
+body .header-nav{
+	font-family: PingFangSC-Regular;
+	font-size: 18px;
+	letter-spacing: 0;
+	background: #FFFFFF;
+	height: 44px;
+}
+.mui-content{
+}
+.banner{
+	height: 123px;
+	background: #f5f5f5;
+	padding-top: 8px;
+	letter-spacing: 2px;
+	color: rgb(155,155,155);
+	text-align: center;
+}
+.banner img{
+	margin: 0 auto;
+}
+.banner span{
+	display: block;
+	text-align: center;
+	letter-spacing: 1px;
+	font-size: 16px;
+	padding-top: 10px;
+}
+.mui-input-group input{
+	height: 48px;
+}
+.mui-input-group .mui-input-row{
+	height: 48px;
+}
+.mui-input-group:before{
+	height: 0;
+}
+
+#input_example label{
+	line-height: 30px;
+	font-size: 16px;
+	color: rgb(74,74,74);
+}
+#input_example input{
+	font-family: PingFangSC-Regular;
+	font-size: 16px;
+}
+#input_example .mui-input-row{
+	display: flex;
+}
+#input_example .mui-input-row label{
+	width: 28%;
+	min-width: 100px;
+}
+#input_example .mui-input-row input{
+	flex: 1;
+	height: 50px;
+}
+#input_example .mui-input-row i{
+	width: 5%;
+	margin-top: 13px;
+	margin-right: 10px;
+	color: #cdcdcd;
+	font-size: 20px;
+}
+#input_example .mui-input-row .icon-xiangqing{
+	color: #BEA473;
+	font-size: 16px;
+	
+}
+.mui-input-group .ipt_i:after{
+	height: 0;
+}
+.reveal-modal-bg{
+	
+}

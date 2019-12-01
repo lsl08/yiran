@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiran.weixin.mapper.WeixinMovingCarDetailMapper">
+    
+    <resultMap type="WeixinMovingCarDetail" id="WeixinMovingCarDetailResult">
+        <result property="id"    column="id"    />
+        <result property="openId"    column="open_id"    />
+        <result property="licensePlate"    column="license_plate"    />
+        <result property="phoneNumber"    column="phone_number"    />
+        <result property="address"    column="address"    />
+        <result property="notiyType"    column="notiy_type"    />
+        <result property="extend1"    column="extend1"    />
+        <result property="extend2"    column="extend2"    />
+        <result property="extend3"    column="extend3"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+	
+	<sql id="selectWeixinMovingCarDetailVo">
+        select id, open_id, license_plate, phone_number, address, notiy_type, extend1, extend2, extend3, create_by, create_time, update_by, update_time, remark from sys_weixin_moving_car_detail
+    </sql>
+	
+    <select id="selectWeixinMovingCarDetailList" parameterType="WeixinMovingCarDetail" resultMap="WeixinMovingCarDetailResult">
+        <include refid="selectWeixinMovingCarDetailVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="openId != null  and openId != '' "> and open_id = #{openId}</if>
+             <if test="licensePlate != null  and licensePlate != '' "> and license_plate = #{licensePlate}</if>
+             <if test="phoneNumber != null  and phoneNumber != '' "> and phone_number = #{phoneNumber}</if>
+             <if test="address != null  and address != '' "> and address = #{address}</if>
+             <if test="notiyType != null "> and notiy_type = #{notiyType}</if>
+             <if test="extend1 != null  and extend1 != '' "> and extend1 = #{extend1}</if>
+             <if test="extend2 != null  and extend2 != '' "> and extend2 = #{extend2}</if>
+             <if test="extend3 != null  and extend3 != '' "> and extend3 = #{extend3}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+             <if test="remark != null  and remark != '' "> and remark = #{remark}</if>
+         </where>
+         order by create_time desc
+    </select>
+    
+    <select id="selectWeixinMovingCarDetailById" parameterType="Integer" resultMap="WeixinMovingCarDetailResult">
+        <include refid="selectWeixinMovingCarDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWeixinMovingCarDetail" parameterType="WeixinMovingCarDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_weixin_moving_car_detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="openId != null  and openId != ''  ">open_id,</if>
+			<if test="licensePlate != null  and licensePlate != ''  ">license_plate,</if>
+			<if test="phoneNumber != null  and phoneNumber != ''  ">phone_number,</if>
+			<if test="address != null  and address != ''  ">address,</if>
+			<if test="notiyType != null  ">notiy_type,</if>
+			<if test="extend1 != null  and extend1 != ''  ">extend1,</if>
+			<if test="extend2 != null  and extend2 != ''  ">extend2,</if>
+			<if test="extend3 != null  and extend3 != ''  ">extend3,</if>
+			<if test="createBy != null  and createBy != ''  ">create_by,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			create_time,
+			update_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="openId != null  and openId != ''  ">#{openId},</if>
+			<if test="licensePlate != null  and licensePlate != ''  ">#{licensePlate},</if>
+			<if test="phoneNumber != null  and phoneNumber != ''  ">#{phoneNumber},</if>
+			<if test="address != null  and address != ''  ">#{address},</if>
+			<if test="notiyType != null  ">#{notiyType},</if>
+			<if test="extend1 != null  and extend1 != ''  ">#{extend1},</if>
+			<if test="extend2 != null  and extend2 != ''  ">#{extend2},</if>
+			<if test="extend3 != null  and extend3 != ''  ">#{extend3},</if>
+			<if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			sysdate(),
+			sysdate()
+         </trim>
+    </insert>
+	 
+    <update id="updateWeixinMovingCarDetail" parameterType="WeixinMovingCarDetail">
+        update sys_weixin_moving_car_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="openId != null  and openId != ''  ">open_id = #{openId},</if>
+            <if test="licensePlate != null  and licensePlate != ''  ">license_plate = #{licensePlate},</if>
+            <if test="phoneNumber != null  and phoneNumber != ''  ">phone_number = #{phoneNumber},</if>
+            <if test="address != null  and address != ''  ">address = #{address},</if>
+            <if test="notiyType != null  ">notiy_type = #{notiyType},</if>
+            <if test="extend1 != null  and extend1 != ''  ">extend1 = #{extend1},</if>
+            <if test="extend2 != null  and extend2 != ''  ">extend2 = #{extend2},</if>
+            <if test="extend3 != null  and extend3 != ''  ">extend3 = #{extend3},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteWeixinMovingCarDetailById" parameterType="Integer">
+        delete from sys_weixin_moving_car_detail where id = #{id}
+    </delete>
+	
+    <delete id="deleteWeixinMovingCarDetailByIds" parameterType="String">
+        delete from sys_weixin_moving_car_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

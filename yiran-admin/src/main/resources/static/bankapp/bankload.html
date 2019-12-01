@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="font/iconfont.css">
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <script src="js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/function.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+    	.next{
+    		display: block;
+			width: 90%;
+			height: 50px;
+			margin: 0 auto;
+			background: #BEA473;
+			border-radius: 3px;
+			border: 1px solid #BEA473;
+		}
+		.con_top img{
+			margin: 50px auto 28px;
+		}
+		.con_top p{
+			font-family: PingFang-SC-Bold;
+			text-align: center;
+			color: #000;
+			font-size: 18px;
+			margin: 0 0 45px;
+		}
+		.con_top p span{
+			display: block;
+			text-align: center;
+			font-size: 14px;
+			color: rgb(155,155,155);
+		}
+	</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav header-nav">
+	    <!-- <i class="mui-icon mui-icon-back bank_back"></i> -->
+	    <h1 class="mui-title">二维码申请结果</h1>
+	</header>
+	<div class="mui-content" style="background: #f5f5f5;">
+		<div class="con_top">
+			<img src="images/Group 2.png"/>
+			<p>
+				二维码申请成功
+			</p>
+		</div>
+		
+		<div class="con_top">
+			<img id="qrcode" src="http://file.yirantrade.com/group1/M00/00/00/rBEADF3ZG4aAN-WwAAXLCF1DlQM228.jpg" width="90%" height="80%"/>
+		</div>
+		<div class="con_top">
+			<p>
+				长按图片保存挪车二维码
+			</p>
+		</div>
+	        <!-- <button type="button" class="mui-btn mui-btn-warning next nextbtn">完成</button> -->
+	</div>
+</body>
+<script type="text/javascript">
+	$(function() {
+		var qrCodeUrl = sessionStorage.getItem("qrCodeUrl");
+		$("#qrcode").attr("src",qrCodeUrl);
+	});
+</script>
+</html>

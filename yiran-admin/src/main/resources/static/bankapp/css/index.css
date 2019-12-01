@@ -1,0 +1,126 @@
+/*合同详情弹出层*/
+.mui-popup.mui-popup-in .mui-popup-inner .mui-popup-text p,.mui-popup.mui-popup-out .mui-popup-inner .mui-popup-text p{
+	text-align: left;
+	line-height: 18px;
+	font-family: PingFangSC-Regular;
+}
+.mui-popup.mui-popup-in .mui-popup-inner .mui-popup-title p{
+	margin-top: 4px;
+	color: #000;
+}
+.mui-popup.mui-popup-in .mui-popup-inner .mui-popup-text p span{
+	float: right;
+}
+
+.reveal-modal-bg{
+position: fixed;
+height: 100%;
+width: 100%;
+background: #000;
+background: rgba(0,0,0,.3);
+z-index: 100;
+display: none;
+top: 0;
+left: 0;
+}
+ 
+.reveal-modal{
+display: none;
+}
+.ywtype{
+	height: 201px;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	background: rgba(250,250,250,1);
+}
+.ywtype h3{
+	height: 48px;
+	line-height: 48px;
+	font-weight: 400;
+	font-size: 18px;
+	font-family: PingFangSC-Regular;
+	line-height: 32px;
+	text-align: center;
+	padding-top: 5px;
+	position: relative;
+}
+.ywtype h3 i{
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	color: rgb(155,155,155);
+	font-size: 36px;
+}
+.ywtype p{
+	text-indent: -12px;
+	font-size: 15px;
+	text-align: center;
+	color: #3e3e3e;
+	line-height: 50px;
+	height: 50px;
+	margin-left: 15px;
+	border-bottom: rgb(231,231,231) solid 1px;
+}
+#input_example input[name=bankCardNo]+span,#input_example input[name=mobileNum]+span{
+	right: 20px;
+}
+.next{
+	display: block;
+	width: 90%;
+	height: 50px;
+	font-size: 17px;
+	margin: 20px auto 30px;
+	background: #f0ad4e;
+	border-radius: 3px;
+	border: 1px solid #f0ad4e;
+}
+.nextbtn{
+}
+.bank_icon{
+	display: none;
+	height: 45px;
+	background: #f5f5f5;
+	font-size: 12px;
+	color: rgb(155,155,155);
+	padding-top: 10px;
+}
+.bank_icon img{
+	height: 15px;
+	width: 15px;
+	float: left;
+	margin-left: 15px;
+	margin-right: 8px;
+	margin-top: 3px;
+}
+.bank_icon span{
+	display: inline-block;
+	float: left;
+
+}
+.bank_d{
+	height: 20px;
+	background: #f5f5f5;
+	padding-top: 14px;
+	padding-left: 15px;
+	padding-bottom: 19px;
+}
+.bank_d img{
+	display: inline-block;
+	width: 19px;
+	height: 19px;
+	float: left;
+	margin-right: 7px;
+}
+.bank_d span{
+	font-size: 10px;
+	color: #AAA;
+	display: inline-block;
+	float: left;
+}
+.bank_d span mark{
+	background: 0;
+	color: #BEA473;
+}
+#input_example .member{
+}

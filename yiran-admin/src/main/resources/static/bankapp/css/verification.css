@@ -1,0 +1,176 @@
+
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: 'Microsoft Yahei';
+	background-color: #f5f5f5;
+}
+
+input {
+	outline: none;
+	background: none;
+	border: 0;
+}
+
+.key-tab {
+	width: 100%;
+	background-color: #fff;
+	position: fixed;
+	bottom: 0;
+}
+
+.key-tab tr {
+	display: flex;
+	height: 55px;
+	line-height: 55px;
+	font-size: 0;
+}
+#fom input[name=smsCode]+span{
+	right: 70px;
+}
+.key-tab tr td {
+	flex: 1;
+	text-align: center;
+	font-size: 1.5rem;
+	border-right: 1px solid #DDDDDD;
+	box-sizing: border-box;
+	border-bottom: 1px solid #EEE;
+}
+
+.key-tab tr td:nth-of-type(3) {
+	border-right: 0;
+}
+
+.key-tab tr td:active {
+	background-color: #eee;
+}
+
+.clear,
+.empty {
+	background: #DDDDDD;
+}
+
+.clear i {
+	font-size: 20px;
+}
+/*验证手机号*/
+.ver-phone{
+	width: 85%;
+	position: fixed;
+	height: 85vw;
+	top: 50px;
+	background: #fff;
+	border-radius: 5px;
+	box-sizing: border-box;
+	padding: 10px;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+}
+.phone_t{
+	text-align: center;
+	position: relative;
+}
+.phone_t p{
+	color: #666;
+	font-size: 14px;
+}
+.phone_t i{
+	position:absolute;
+	top: 0;
+	right:0;
+	font-size: 24px;
+}
+.phone_t>mark{
+	background: 0;
+	display: block;
+	width: 100%;
+	text-align: center;
+	color: #ccc;
+	font-size: 14px;
+	line-height: 36px;
+	margin-top: 5px;
+}
+.phone_t span{
+	display: block;
+	margin-top: 10px;
+	font-size: 26px;
+	line-height: 42px;
+}
+.phone_t span mark{
+	background: 0;
+	color: #ccc;
+}
+.phone_c div{
+	overflow: hidden;
+	margin-top: 50px;
+}
+.phone_c div input{
+	width: 60%;
+}
+.phone_c div button{
+	width: 35%;
+	margin-left: 1%;
+	height: 40px;
+}
+.phone_c>button{
+	margin-top: 10px;
+	width: 100%;
+	height: 40px;
+	border: 1px solid #BEA473;
+	background: #BEA473;
+	color: #fff;
+}
+.con_top{
+	padding-top: 25px;
+	text-align: center;
+	margin-bottom: 20px;
+}
+.con_top p{
+	font-size: 15px;
+	color: rgb(155,155,155);
+	line-height: 24px;
+	margin-bottom: 15px;
+}
+.con_top span{
+	color: #000;
+	font-size: 30px;
+}
+#fom .mui-input-row{
+	display: flex;
+	margin-bottom: 10px;
+}
+#fom .mui-input-row label{
+	font-size: 16px;
+	width: 25%;
+	line-height: 26px;
+}
+#fom .mui-input-row input{
+	flex: 1;
+	width: 40%;
+	float: none;
+}
+#fom .mui-input-row mark{
+	background: 0;
+	width: 20%;
+	float: right;
+	line-height: 46px;
+	color: #BEA473;
+	margin-right: 5px;
+}
+.next{
+	display: block;
+	width: 90%;
+	height: 50px;
+	margin: 0 auto;
+	background: #DDDDDD;
+	border-radius: 3px;
+	border: 1px solid #DDDDDD;
+}
+#fom input[name=code]+span{
+	right: 60px;
+}

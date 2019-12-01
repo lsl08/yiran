@@ -15,6 +15,8 @@ public interface ISmsSendService {
 	 * @return
 	 */
 	public AjaxResult sendAuthCode(SendAuthCodeRequest request); 
+	
+	public AjaxResult sendBizCode(SendAuthCodeRequest request); 
 	/**
 	 * 验证手机号和验证码
 	 * @param request

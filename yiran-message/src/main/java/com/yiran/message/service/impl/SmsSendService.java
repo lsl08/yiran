@@ -232,4 +232,95 @@ public class SmsSendService implements ISmsSendService {
 		return null;
 	}
 
+	@Override
+	public AjaxResult sendBizCode(SendAuthCodeRequest request) {
+		logger.debug("发送短信验证码请求参数："+JSONUtil.toJsonStr(request));
+		if(StringUtils.isBlank(request.getTemplateId())){
+			return AjaxResult.error("模板ID不能为空");
+		}else if(StringUtils.isBlank(request.getPhone())){
+			return AjaxResult.error("手机号不能为空");
+		}
+		//根据短信模板ID获取模板信息
+		SysSmsTemplate  smsTemplate = sysSmsTemplateMapper.selectSmsTemplateByTemplateId(request.getTemplateId());
+		if(smsTemplate!=null){
+			//获取模板内容
+			String templateContent = smsTemplate.getTemplateContent();
+			//准备参数
+			Map<String, String> data =new HashMap<String, String>();
+			data.put("code", request.getMap().get("licensePlate"));
+			data.put("address",request.getMap().get("address"));
+			//获取发送短信流水号
+			String msgOrderNo = RandomUtil.randomString(32);
+			//替换模板中的数据,获取最终发送的消息
+			String sendData = StringTemplateUtils.render(templateContent, data);
+			logger.debug("发送短信数据："+sendData);
+			//记录发送信息到表
+			saveMsgLog(smsTemplate,null,sendData,msgOrderNo,request.getPhone());
+			//TODO：这里调用短息平台发送短信
+			SendSMSResponse sendSMSResponse = sendBizSMS(data,request.getPhone(),request.getTemplateId());
+			logger.debug("调用短息平台发送短信返回数据："+JSONUtil.toJsonStr(sendSMSResponse));
+			//TODO:需要修改
+			if("OK".equals(sendSMSResponse.getCode())){
+				sendSMSResponse.setStatus("S");
+				//更新发送记录表
+				updateMsgLog(sendSMSResponse,msgOrderNo);
+				return AjaxResult.success(SmsResultEnum.getByCode(sendSMSResponse.getCode()).getMessage())
+						.put("msgOrderNo", msgOrderNo).put("code", "0000");
+			}else{
+				sendSMSResponse.setStatus("F");
+				//更新发送记录表
+				updateMsgLog(sendSMSResponse,msgOrderNo);
+				return AjaxResult.error(SmsResultEnum.getByCode(sendSMSResponse.getCode()).getMessage())
+						.put("code", "0003");
+			}
+			
+		}
+		return null;
+	}
+
+	private SendSMSResponse sendBizSMS(Map<String, String> data, String phone, String templateId) {
+		SendSMSResponse sendSMSResponse = new SendSMSResponse();
+		//调平台发短息
+		 try {
+			//产品名称:云通信短信API产品,开发者无需替换
+			String product = "Dysmsapi";
+			//产品域名,开发者无需替换
+			String domain = "dysmsapi.aliyuncs.com";
+
+			// TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
+			String accessKeyId = sysSmsConfigService.selectSmsConfigBySmsKey(SysSmsConfig.KEY_SMS_APPID).getSmsValue();
+			String accessKeySecret = sysSmsConfigService.selectSmsConfigBySmsKey(SysSmsConfig.KEY_SMS_APPSECRET).getSmsValue();
+			//可自助调整超时时间
+			System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
+			System.setProperty("sun.net.client.defaultReadTimeout", "10000");
+			//初始化acsClient,暂不支持region化
+			IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
+			DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
+			IAcsClient acsClient = new DefaultAcsClient(profile);
+			
+			//组装请求对象-具体描述见控制台-文档部分内容
+	        SendSmsRequest request = new SendSmsRequest();
+	        //必填:待发送手机号
+	        request.setPhoneNumbers(phone);
+	        //必填:短信签名-可在短信控制台中找到
+	        request.setSignName(sysSmsConfigService.selectSmsConfigBySmsKey(SysSmsConfig.KEY_SMS_SHORT_SIGNATURE).getSmsValue());
+	        //必填:短信模板-可在短信控制台中找到
+	        request.setTemplateCode(templateId);
+	        //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
+	        request.setTemplateParam("{\"code\": \""+data.get("code")+"\",\"address\": \""+data.get("address")+"\"}");
+	        //选填-上行短信扩展码(无特殊需求用户请忽略此字段)
+	        //request.setSmsUpExtendCode("90997");
+	        //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
+	        request.setOutId("pandaxu");
+	        //hint 此处可能会抛出异常，注意catch
+	        SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
+	        sendSMSResponse.setCode(sendSmsResponse.getCode());
+			sendSMSResponse.setMsg(SmsResultEnum.getByCode(sendSMSResponse.getCode()).getMessage());
+			sendSMSResponse.setBizId(sendSmsResponse.getBizId());
+		} catch (ClientException e) {
+			e.printStackTrace();
+		}
+		 return sendSMSResponse;
+	}
+
 }

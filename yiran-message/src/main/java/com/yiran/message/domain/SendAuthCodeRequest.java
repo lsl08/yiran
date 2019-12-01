@@ -1,6 +1,8 @@
 package com.yiran.message.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 发送短息请求
@@ -28,7 +30,18 @@ public class SendAuthCodeRequest implements Serializable{
 	 * 短信发送流水号
 	 */
 	private String msgOrderNo;
+	/**
+	 * 参数
+	 */
+	private Map<String,String> map = new HashMap<String,String>();
 	
+	
+	public Map<String, String> getMap() {
+		return map;
+	}
+	public void setMap(Map<String, String> map) {
+		this.map = map;
+	}
 	public String getMsgOrderNo() {
 		return msgOrderNo;
 	}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="font/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <script src="js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/function.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+    	
+		.mui-backdrop {
+		    position: fixed;
+		    top: 0;
+		    right: 0;
+		    bottom: 0;
+		    left: 0;
+		    z-index: 998;
+		    background-color: rgba(0,0,0,0);
+		}
+    </style>
+</head>
+<body>
+	
+	<header class="mui-bar mui-bar-nav header-nav">
+	    <h1 class="mui-title">通知车主</h1>
+	</header>
+	<div class="mui-content">
+		<div class="banner">
+			<img src="images/carshow.png"/>
+			<span>扫码挪车 安全便捷</span>
+		</div>	   
+		<button type="button"  class="mui-btn mui-btn-warning next nextbtn yzbtn">车牌号:<span id="licensePlate">浙A88888</span></button>
+	</div>
+	<button type="button"  class="mui-btn mui-btn-warning next nextbtn yzbtn" onclick="smsNotify()">短信通知</button>
+	<button type="button"  class="mui-btn mui-btn-warning next nextbtn yzbtn" onclick="wxNotify()">微信通知</button>
+	<a id="call_up" ><button type="button"  class="mui-btn mui-btn-warning next nextbtn yzbtn" >拨打电话</button></a>
+	<!--业务类型-->
+</body>
+<script type="text/javascript">
+	function GetQueryString(name)
+	{
+		 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象  
+	var r = window.location.search.substr(1).match(reg);  //匹配目标参数  
+	if (r != null) return decodeURI(r[2]); return null; //返回参数值  (decodeURI解决参数乱码问题)
+	}
+	
+	var openId = GetQueryString("openid");
+	var phone = GetQueryString("phone");
+	var licensePlate = GetQueryString("licensePlate");
+	$("#licensePlate").html(licensePlate);
+	$("#call_up").attr("href","tel:"+phone);
+	///notifyOwner/{openId}/{notifyType}/{licensePlate}
+	function smsNotify(){
+		$.ajax({
+			type: "post",
+			url: url()+"/api/yiran/movingCar/notifyOwner/"+openId+"/1/"+licensePlate,
+			async: false, //同步
+			success: function (data) {
+				if(data.code == "200"){
+					mui.alert("已经短信通知车主，车主将尽快赶来");
+				}else{
+					mui.alert(data.msg);
+				}
+			},
+			//调用出错执行的函数
+			error: function(){
+					mui.toast("请求服务器api失败，无法获取数据",{ duration:'2000', type:'div' })
+			}
+		})
+	}
+	
+	function wxNotify(){
+		$.ajax({
+			type: "post",
+			url: url()+"/api/yiran/movingCar/notifyOwner/"+openId+"/2/"+licensePlate,
+			async: false, //同步
+			success: function (data) {
+				if(data.code == "200"){
+					mui.alert("已经微信通知车主，车主将尽快赶来");
+				}else{
+					mui.alert(data.msg);
+				}
+			},
+			//调用出错执行的函数
+			error: function(){
+					mui.toast("请求服务器api失败，无法获取数据",{ duration:'2000', type:'div' })
+			}
+		})
+	}
+	
+	
+</script>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+	<meta name="format-detection" content="email=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="font/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <script src="js/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/function.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+    	#input_example .bankid:after{
+    		background: none;
+    	}
+		#input_example input[name=partnerId]{
+			cursor: pointer; -webkit-appearance: none;
+			color: #BEA473;
+		}
+		.zcyw{
+			line-height: 30px;
+		    height: 30px;
+		    font-size: 12px;
+		    position: absolute;
+	        top: 48px;
+			left: 28%;
+		}
+    </style>
+</head>
+<body>
+	
+	<header class="mui-bar mui-bar-nav header-nav">
+		<a id="back" class="mui-action-back mui-icon mui-icon-left-nav bank_dback"></a>
+	    <h1 class="mui-title">绑卡</h1>
+	</header>
+	<div class="mui-content">
+		<div class="banner">
+			<img src="images/Group 3.png"/>
+			<span>安全绑卡 更快服务</span>
+		</div>
+	    <form class="mui-input-group " id="input_example">
+	    	<div style="position: relative;">
+	        <div class="mui-input-row ipt_i" style="border-bottom: 30px solid #f5f5f5;height: 80px;">
+	        	<label>机构名称</label>
+	            <input style="line-height: 50px;" type="text" name="partnerId" value="" readonly="readonly" placeholder="请选择机构名称" class="mui-input-clear" placeholder="input">
+	        	<i class="mui-icon mui-icon-arrowright" style="float: right;"></i>
+	        </div>
+	        <p class="zcyw"></p>
+	        </div>
+	        <div class="mui-input-row">
+	        	<label>持卡人</label>
+	            <input type="text" name="realName" value="" placeholder="请输入持卡人姓名" class="mui-input-clear" placeholder="input">
+	        </div>
+	        <div class="mui-input-row">
+	        	<label>身份证号</label>
+	            <input type="text" name="identityNo" value="" placeholder="请输入身份证号" class="mui-input-clear" placeholder="input">
+	        </div>
+	        <div class="mui-input-row bankid">
+	        	<label>卡号</label>
+	            <input type="text" name="bankCardNo" maxlength="23" value="" placeholder="请输入储蓄卡号" class="mui-input-clear" placeholder="input">
+	            <i class="iconfont icon-xiangqing"></i>
+	        </div>
+	        <div class="bank_icon">
+	        	<img src="" /><span>招商银行</span>
+	        </div>
+	    </form>
+			<button type="button" data='0' class="mui-btn mui-btn-warning next yzbtn ">验证卡号</button>
+	</div>
+
+	<!--业务类型-->
+	<div class="reveal-modal-bg">
+		<div class="ywtype">
+			<h3>
+				机构名称
+				<i class="mui-icon mui-icon-closeempty"></i>
+			</h3>
+			<div class="ywcon">
+				<p >永达小额贷款</p>
+				<p >永达融资租赁</p>
+				<p style="border: 0;">永昇融资租赁</p>
+				<!--<p style="border: 0;">杭州资产管理</p>-->
+			</div>
+		</div>		
+	</div>
+</body>
+<script type="text/javascript">
+	var listenerBackHandler = {  
+	    param: {  
+	        isRun: false, //防止微信返回立即执行popstate事件  
+	    },  
+	    listenerBack: function () {  
+	        var state = {  
+	            title: "title",  
+	            url: "#"  
+	        };  
+	        window.history.pushState(state, "title", "#");  
+	
+	        window.addEventListener("popstate", function (e) {  
+	            if (listenerBackHandler.param.isRun) {  
+	                    WeixinJSBridge.call('closeWindow'); //返回到主页 
+	            }  
+	        }, false);  
+	    },  
+	    //初始化返回事件  
+	    initBack: function () {  
+	        window.addEventListener('pageshow', function () {  
+	            listenerBackHandler.param.isRun = false;  
+	            setTimeout(function () { listenerBackHandler.param.isRun = true; }, 1000); //延迟1秒 防止微信返回立即执行popstate事件  
+	            listenerBackHandler.listenerBack();  
+	        });  
+	    }  
+	}
+	
+	
+	ifToken("/bankapp/bankindex.html");
+	var flag = GetQueryString("flag");
+//	mui.toast('flag:'+flag)
+	$("#back").css("display","none")
+	if(flag){
+		sessionStorage.setItem("flag",flag);
+//		mui.toast('flag:'+sessionStorage.getItem("flag"));
+		sessionStorage.setItem ("ka-token",GetQueryString("token"));
+		$("#back").css("display",'inline-block');
+		$("#back").off("click").on("click",function(){
+			window.location.href = url()+"/h5/bankCards/index.html#/bankCardManage?token="+GetQueryString("token");
+		})
+		
+	}else{
+		listenerBackHandler.initBack();
+	}
+	window.onbeforeunload = function(){
+		sessionStorage.removeItem('bankdata')
+	}
+	var params
+	
+	if(getUrlParam('params')){
+		$('.bank_dback').css('display','inline-block')
+		var searchUrl =window.location.href;
+   		var searchData =searchUrl.split("=");        //截取 url中的“=”,获得“=”后面的参数
+    	var searchText =decodeURI(searchData[1]);
+		var params=JSON.parse(searchText)
+		console.log(params)
+		$('.ipt_i').css('display','none')
+		$('.ipt_i input[name=partnerId]').val(partnerIdstr2(params.merchant))
+		$('#input_example input[name=identityNo]').val(params.idcard).attr('disabled',true)
+		$('#input_example input[name=realName]').val(params.name).attr('disabled',true)
+		sessionStorage.setItem('params',JSON.stringify(params))
+	}
+	$("input[name=realName]").on("input",function(){
+		$(this).val().replace(/\s/g,"");
+	})
+	
+	var bankflag=false
+	var bankdata;
+//	if(sessionStorage.getItem('bankdata')){
+//		$('#input_example input[name=partnerId]').css('font-weight','900')
+//		ipubancardNO()
+//	}
+	mui(document.body).on('tap', '.yzbtn', function(e) {
+		//按钮式灰色不可点击
+//		if($(this).attr('data')=='0'){
+//			return false
+//		}
+		var check=true
+		
+		mui("#input_example input").each(function() {
+			//若当前input为空，则alert提醒 
+			if(!this.value || this.value.trim() == "") {
+			    var label = this.previousElementSibling;
+		    	mui.toast(label.innerText + "不允许为空");
+			    check = false;
+			    return false;
+			    
+			}
+		});
+		if(!check){
+			return false
+		}
+		//身份证验证
+		if(!idcard($('#input_example input[name=identityNo]').val().replace(/\s+/g,""))){
+			mui.toast('身份证格式不正确！')
+			return false
+		}
+		if(!bankflag){
+			mui.toast('请输入有效的储蓄卡号！')
+			return false
+		}
+		bankdata={
+			instCode:$('.bank_icon span').attr('instCode'),
+			instName:$('.bank_icon span').html(),
+			dbcr:$('.bank_icon span').attr('dbcr'),
+			realName:$('#input_example input[name=realName]').val(),
+			identityNo:$('#input_example input[name=identityNo]').val().toLocaleUpperCase(),
+			bankCardNo:($('#input_example input[name=bankCardNo]').val()).replace(/\s+/g,"")
+		}
+		var datas={
+			realName:$('#input_example input[name=realName]').val(),
+			identityNo:$('#input_example input[name=identityNo]').val(),
+			cardNo:($('#input_example input[name=bankCardNo]').val()).replace(/\s+/g,"")
+		}
+		//获取partnerId
+		var partnerId=partnerIdstr($('#input_example input[name=partnerId]').val())
+		
+		bankdata.partnerId=partnerId;
+		datas.partnerId=partnerId;
+		ajax(url()+'/cashier/h5/checkCardNo.htm',datas,function(data){
+			console.log(data)
+			if(!data.success){
+				mui.toast(data.message)
+				return false
+			}
+			sessionStorage.setItem('bankdata',JSON.stringify(bankdata))
+			mui.openWindow({url:'bankmember.html'})
+			window.onbeforeunload = function(){
+				console.log(2222)
+			}
+		})
+		
+	});
+	//业务类型
+	mui(document.body).on('tap', 'input[name=partnerId],.mui-icon-arrowright', function(e) {
+		$('.reveal-modal-bg').show()
+	})
+	mui(document.body).on('tap', '.reveal-modal-bg h3 i', function(e) {
+		$('.reveal-modal-bg').hide()
+		
+	})
+	//机构名称
+	mui(document.body).on('tap', '.ywtype p', function(e) {
+		$('.ywtype p').css('color','#3e3e3e')
+		$(this).css('color','rgb(190,164,115)')
+		$('.reveal-modal-bg').hide()
+		$('#input_example input[name=partnerId]').css('font-weight','900')
+		$('#input_example input[name=partnerId]').attr('data-partnerId',$(this).attr('data-partnerId'))
+		$('#input_example input[name=partnerId]').val($(this).html())
+		if($(this).html() == "永达小额贷款"){
+			$(".zcyw").html('(支持达分期/惠分期业务)')
+		}
+		if($(this).html() == "永达融资租赁"){
+			$(".zcyw").html('(支持融资租赁业务)')
+		}
+		if($(this).html() == "永昇融资租赁"){
+			$(".zcyw").html('(支持永晟融资租赁业务)')
+		}
+		
+		ipubancardNO()
+	})
+	//身份证验证
+	mui(document.body).on('change', '#input_example input[name=identityNo]', function(e) {
+		if(!idcard($(this).val())){
+			mui.toast('身份证格式不正确！')
+		}else{
+			ipubancardNO()
+		}
+	})
+	//银行卡号 444格式
+	mui(document.body).on('input', '#input_example input[name=bankCardNo]', function(e) {
+		ipubancardNO()
+		
+	})
+	//查看银行卡号详情
+	$('.bankid i').click( function(e) {
+		if(($('#input_example input[name=bankCardNo]').val()).replace(/\s+/g,"")!=''){
+			bankdata={
+				instCode:$('.bank_icon span').attr('instCode'),
+				instName:$('.bank_icon span').html(),
+				dbcr:$('.bank_icon span').attr('dbcr'),
+				realName:$('#input_example input[name=realName]').val(),
+				identityNo:$('#input_example input[name=identityNo]').val(),
+				bankCardNo:($('#input_example input[name=bankCardNo]').val()).replace(/\s+/g,"")
+			}
+			sessionStorage.setItem('bankdata',JSON.stringify(bankdata))
+		}
+		mui.openWindow({url:'banklist.html'})
+		window.onbeforeunload = function(){
+			console.log(2222)
+		}
+	})
+	mui(document.body).on('tap','.bankid .mui-icon-clear',function(){
+		ipubancardNO()
+	})
+</script>
+</html>
