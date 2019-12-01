@@ -131,7 +131,8 @@ YiRan //依然快速开发平台
 - API地址: http://api.yirantrade.com/swagger-ui.html
 - 文档地址：https://www.showdoc.cc/507593531047031
 - 工作流demo使用：https://www.showdoc.cc/p/ca24cc1f5bf158c25523efa6ed36a524
-###注意：项目中的请假流程模型流程不要随便修改，否则无法运行
+- 支付渠道说明视频在QQ群，需要的可以加QQ群
+### 注意：项目中的请假流程模型流程不要随便修改，否则无法运行
 - 微信公账号商城体验
 - ![输入图片说明](https://images.gitee.com/uploads/images/2019/1106/134819_0609ee7e_928853.png "屏幕截图.png")
 ## API接口
