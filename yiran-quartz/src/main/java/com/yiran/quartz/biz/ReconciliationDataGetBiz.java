@@ -68,7 +68,7 @@ public class ReconciliationDataGetBiz {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("billDate", billDateStr);
 		paramMap.put("fundChannelCode", fundChannelCode);
-                paramMap.put("status", "S");
+                paramMap.put("status", InstOrderStatus.SUCCESSFUL.getCode());
 		LOG.info("开始查询平台支付所有的数据：billDate[" + billDateStr + "],支付渠道为[" + fundChannelCode + "]");
 		List<PayInstOrder> recordList = payInstOrderService.listPaymentRecord(paramMap);
 		if (recordList == null) {
